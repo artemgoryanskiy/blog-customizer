@@ -18,6 +18,7 @@ import { Select } from 'src/ui/select';
 import { Separator } from 'src/ui/separator';
 import { RadioGroup } from 'src/ui/radio-group';
 import clsx from 'clsx';
+import { Text } from 'src/ui/text';
 
 export const ArticleParamsForm = () => {
 	// Состояние сайдбара
@@ -99,6 +100,9 @@ export const ArticleParamsForm = () => {
 					className={styles.form}
 					onSubmit={handleSubmit}
 					onReset={handleReset}>
+					<Text size={31} weight={800} uppercase>
+						Задайте параметры
+					</Text>
 					<Select
 						title='Шрифт'
 						selected={formState.fontFamilyOption}
