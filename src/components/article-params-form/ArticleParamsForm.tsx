@@ -17,12 +17,11 @@ import { useOutsideClickClose } from 'src/ui/select/hooks/useOutsideClickClose';
 import { Select } from 'src/ui/select';
 import { Separator } from 'src/ui/separator';
 import { RadioGroup } from 'src/ui/radio-group';
-import clsx from 'clsx';
 import { Text } from 'src/ui/text';
 
 export const ArticleParamsForm = () => {
 	// Состояние сайдбара
-	const [isOpen, setIsOpen] = useState(false);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	// Состояние настроек формы
 	const [formState, setFormState] =
 		useState<ArticleStateType>(defaultArticleState);
@@ -32,13 +31,13 @@ export const ArticleParamsForm = () => {
 	const formRef = useRef<HTMLDivElement>(null);
 	// Применения хука для закрытия при клике вне элемента
 	useOutsideClickClose({
-		isOpen,
+		isOpen: isMenuOpen,
 		rootRef: formRef,
-		onChange: setIsOpen,
+		onChange: setIsMenuOpen,
 	});
 	// Обработчик открытия/закрытия сайдбара
 	const toggleSidebar = () => {
-		setIsOpen((prev) => !prev);
+		setIsMenuOpen((prev) => !prev);
 	};
 	// Применение CSS-переменных
 	const applyStyles = (state: ArticleStateType) => {
@@ -56,12 +55,16 @@ export const ArticleParamsForm = () => {
 	};
 
 	useEffect(() => {
-		applyStyles(initialState);
+		applyStyles(defaultArticleState);
 	}, []);
+
+	useEffect(() => {
+		if (!isMenuOpen) return;
+		applyStyles(formState);
+	}, [isMenuOpen]);
 	// Обработчик применения настроек
 	const handleApply = () => {
 		console.log('Вызван handleApply');
-
 		applyStyles(formState);
 	};
 	// Оьработчик сброса настроек
@@ -92,10 +95,12 @@ export const ArticleParamsForm = () => {
 	};
 	return (
 		<div ref={formRef}>
-			<ArrowButton isOpen={isOpen} onClick={toggleSidebar} />
+			<ArrowButton isOpen={isMenuOpen} onClick={toggleSidebar} />
 
 			<aside
-				className={clsx(styles.container, { [styles.container_open]: isOpen })}>
+				className={`${styles.container} ${
+					isMenuOpen ? styles.container_open : ''
+				}`}>
 				<form
 					className={styles.form}
 					onSubmit={handleSubmit}
