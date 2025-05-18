@@ -64,7 +64,6 @@ export const ArticleParamsForm = () => {
 	}, [isMenuOpen]);
 	// Обработчик применения настроек
 	const handleApply = () => {
-		console.log('Вызван handleApply');
 		applyStyles(formState);
 	};
 	// Оьработчик сброса настроек
